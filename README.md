@@ -1,6 +1,6 @@
 # Penugasan 1
 
-Nama: Mayandra Suhaira Frisiandi
+Nama: Mayandra Suhaira Frisiandi  
 NRP: 5025241240
 
 ## Deskripsi Singkat
@@ -9,7 +9,7 @@ Service sederhana menggunakan Node.js yang menyediakan endpoint `/health`. Servi
 
 ## Endpoint
 
-Jika request berhasil, response akan mengembalikan HTTP 200 OK.
+Jika request berhasil, response akan mengembalikan HTTP 200 OK dan response JSON.
 ```
 if (req.url === '/health'){
 	res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -34,7 +34,7 @@ docker build -t health .
 
 Kemudian untuk menjalankan image tersebut menggunakan:
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Deployment ke VPS
@@ -53,9 +53,9 @@ cd oprec_ncc
 Dalam folder `oprec_ncc`, build dan run aplikasi seperti sebelumnya
 ```
 docker build -t health .
-docker-compose up -d
+docker compose up -d
 ```
 
-Service sekarang bisa dikases melalui internet
+Service dapat diakses melalui internet dengan IP VPS.
 
-![bisa](aksesbisa.png)
+![Bukti Akses Endpoint](aksesbisa.png)
