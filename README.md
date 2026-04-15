@@ -58,4 +58,4 @@ docker-compose up -d
 
 Service sekarang bisa dikases melalui internet
 
-[bisa](aksesbisa.png)
+![bisa](aksesbisa.png)
