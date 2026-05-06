@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        SONARQUBE_ENV = 'sonarserver'
+        SCANNER_HOME = tool 'sonarqube8.0'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -19,5 +24,28 @@ pipeline {
                 echo 'Testing...'
             }
         }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
+                    sh """
+                        ${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=penugasan2 \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=$IDjenkins
+                    """
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
     }
 }
