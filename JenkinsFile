@@ -28,13 +28,14 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh """
-                        ${SCANNER_HOME}/bin/sonar-scanner \
-                        -Dsonar.projectKey=penugasan2 \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=http://sonarqube:9000 \
-                        -Dsonar.login=IDjenkins
-                    """
+                    withCredentials([string(credentialsId: 'IDjenkins', variable: 'SONAR_TOKEN')]) {
+                        sh """
+                            ${SCANNER_HOME}/bin/sonar-scanner \
+                            -Dsonar.projectKey=penugasan2 \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=http://sonarqube:9000 \
+                            -Dsonar.token=${SONAR_TOKEN}
+                        """
                 }
             }
         }
