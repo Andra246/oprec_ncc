@@ -68,6 +68,7 @@ Alur kerja pipeline adalah sebagai berikut:
 ### SonarQube
 <img width="1919" height="1011" alt="image" src="https://github.com/user-attachments/assets/27f454db-ed96-4016-8288-c14874dc1d4e" />
 
+
 Pipeline berhasil dijalankan hingga tahap Quality Gate dengan status SUCCESS, menunjukkan integrasi Jenkins dan SonarQube telah berjalan dengan baik.
 
 ## Kendala yang dihadapi
