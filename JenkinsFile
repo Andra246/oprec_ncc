@@ -33,7 +33,7 @@ pipeline {
                         -Dsonar.projectKey=penugasan2 \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=$IDjenkins
+                        -Dsonar.login=IDjenkins
                     """
                 }
             }
