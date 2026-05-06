@@ -33,7 +33,6 @@ pipeline {
                             ${SCANNER_HOME}/bin/sonar-scanner \
                             -Dsonar.projectKey=penugasan2 \
                             -Dsonar.sources=. \
-                            -Dsonar.host.url=http://sonarqube:9000 \
                             -Dsonar.token=${SONAR_TOKEN}
                         """
                     }
