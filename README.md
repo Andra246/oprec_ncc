@@ -1,61 +1,75 @@
-# Penugasan 1
+# Penugasan 3
 
 Nama: Mayandra Suhaira Frisiandi  
 NRP: 5025241240
 
-## Deskripsi Singkat
+## Deskripsi Arsitektur Sistem Monitoring
 
-Service sederhana menggunakan Node.js yang menyediakan endpoint `/health`. Service ini dijalankan menggunakan Docker dan dapat diakses melalui VPS.
+Sistem monitoring dibangun menggunakan Prometheus, Grafana, dan Node expoerte yang dijalankan pada 2 virtual machine di Microsoft Azure.
 
-## Endpoint
+1. Node Exporter
+	- Mengambil data dari sistem operasi (CPU, RAM, disk, network)
+	- Berjalan di masing-masing VM
+	- Mengekspos data melalui port 9100
 
-Jika request berhasil, response akan mengembalikan HTTP 200 OK dan response JSON.
+2. Prometheus
+	- Mengambil data dari Node Exporter (scraping)
+	- Menyimpan data dalam bentuk time-series
+	- Menyediakan query menggunakan PromQL
+
+3. Grafana
+	- Mengambil data dari Prometheus
+	- Menampilkan data dalam bentuk grafik/dashboard
+
+4. Azure Virtual Machine
+	- Menjadi tempat menjalankan semua service
+
+Alur data
 ```
-if (req.url === '/health'){
-	res.writeHead(200, { 'Content-Type': 'application/json' });
-	res.end(JSON.stringify({status: 'OK'}));
-}
-```
-Selain `/health`, semua endpoint akan mengembalikan 404 Not Found.
-
-```
-else {
-	res.writeHead(404);
-	res.end('Not Found')
-}
-```
-
-## Build & Run Docker
-
-Untuk membuat image, dijalankan:
-```
-docker build -t health .
+Node Exporter → Prometheus → Grafana
 ```
 
-Kemudian untuk menjalankan image tersebut menggunakan:
-```
-docker compose up -d
-```
+## Penjelasan Integrasi Prometheus dengan Grafana
 
-## Deployment ke VPS
+Prometheus diintegrasikan dengan Grafana sebagai data source.
 
-Setelah mendapatkan VPS. Login menggunakan ssh dan buat folder untuk menaruh project.
-```
-mkdir projects
-cd projects
-```
-Pada project lakukan clone repository dan masuk pada folder.
-```
-git clone https://github.com/Andra246/oprec_ncc
-cd oprec_ncc
-```
+Langkah integrasi:
+1. Grafana diakses melalui browser
+2. Masuk ke menu Connections lalu Data Sources
+3. Pilih Prometheus
+4. Masukkan URL Prometheus:
+   ```
+   http://40.81.16.129:9090
+   ```
+5. Klik save
+   
+Setelah berhasil disimpan, Grafana dapat melakukan query ke Prometheus menggunakan bahasa PromQL.
 
-Dalam folder `oprec_ncc`, build dan run aplikasi seperti sebelumnya
-```
-docker build -t health .
-docker compose up -d
-```
+## Konfigurasi Prometheus
 
-Service dapat diakses melalui internet dengan IP VPS.
+<img width="806" height="435" alt="image" src="https://github.com/user-attachments/assets/71d1420a-bcd0-422a-85d9-261d7eb21221" />
+<img width="959" height="506" alt="image" src="https://github.com/user-attachments/assets/5f01c013-60b2-4a24-a5da-7a049fad2b49" />
 
-![Bukti Akses Endpoint](aksesbisa.png)
+## Konfigurasi Data Source di Grafana
+
+<img width="776" height="236" alt="image" src="https://github.com/user-attachments/assets/4b9bae1c-d19d-42b9-8a1c-6678f3dfd07e" />
+<img width="767" height="170" alt="image" src="https://github.com/user-attachments/assets/f12270d5-7611-4f31-980e-21c0c6bfa3e3" />
+
+## Custom Dashboard
+
+<img width="959" height="507" alt="image" src="https://github.com/user-attachments/assets/72eee930-3e70-4205-97a1-4eb5de12996d" />
+
+## Penjelasan Alur Monitoring
+
+Alur sistem monitoring berjalan sebagai berikut:
+
+1. Node Exporter mengumpulkan data sistem dari VM (CPU, RAM, disk, network).
+2. Data tersebut diekspos melalui endpoint HTTP pada port 9100.
+3. Prometheus melakukan scraping data dari Node Exporter secara berkala (setiap 15 detik).
+4. Prometheus menyimpan data dalam bentuk time-series database. Data disimpan sebagai time-series sehingga memungkinkan analisis perubahan metric berdasarkan waktu.
+5. Grafana mengambil data dari Prometheus secara near real-time berdasarkan query PromQL.
+6. Data ditampilkan dalam bentuk dashboard visual.
+
+## Kendala yang Dihadapi
+
+Prometheus tidak dapat berjalan akibat kesalahan penulisan pada file konfigurasi YAML (missing `s` pada `static_configs`). Masalah ini berhasil diperbaiki setelah konfigurasi diperbaiki dan service direstart.
