@@ -58,6 +58,7 @@ Setelah berhasil disimpan, Grafana dapat melakukan query ke Prometheus menggunak
 ## Custom Dashboard
 
 <img width="959" height="507" alt="image" src="https://github.com/user-attachments/assets/72eee930-3e70-4205-97a1-4eb5de12996d" />
+<img width="959" height="470" alt="image" src="https://github.com/user-attachments/assets/3429eff2-85e9-4fe5-99e4-ac3a8cab5f9f" />
 
 ## Penjelasan Alur Monitoring
 
